@@ -5,16 +5,17 @@ require 'rails_helper'
 #
 # Table name: users
 #
-#  id              :bigint(8)        not null, primary key
-#  email           :string           not null
-#  first_name      :string
-#  last_login_at   :datetime
-#  last_login_ip   :string
-#  last_name       :string
-#  password_digest :string
-#  role            :integer          default("member"), not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id                :bigint(8)        not null, primary key
+#  confirmed         :boolean          default(FALSE), not null
+#  email             :string           not null
+#  first_name        :string
+#  last_name         :string
+#  password_digest   :string
+#  phone_number      :string           not null
+#  role              :integer          default("member"), not null
+#  verification_code :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 # Indexes
 #
@@ -38,15 +39,33 @@ RSpec.describe User, type: :model do
       end
     end
 
+    describe 'phone_number' do
+      it 'validates uniqueness' do
+        user = build(:user)
+
+        expect(user).to validate_uniqueness_of(:phone_number).case_insensitive
+      end
+
+      it 'rejects invalid phone numbers' do
+        invalid_user = build(:user, phone_number: '901')
+
+        expect(invalid_user).not_to be_valid
+      end
+    end
+
     describe 'password' do
       it 'validates presence' do
-        is_expected.to validate_presence_of(:password)
+        user = build(:user, password: nil)
+
+        expect(user).to validate_presence_of(:password)
       end
     end
 
     describe 'role' do
       it 'validates presence' do
-        is_expected.to validate_presence_of(:role)
+        user = build(:user)
+
+        expect(user).to validate_presence_of(:role)
       end
     end
   end
@@ -56,6 +75,7 @@ RSpec.describe User, type: :model do
       let(:user) { create(:user) }
 
       it { expect(user.role).to eq('member') }
+      it { expect(user.confirmed?).to be_falsey }
     end
   end
 end
