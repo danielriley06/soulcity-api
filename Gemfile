@@ -25,17 +25,22 @@ gem 'bcrypt', '~> 3.1.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
-# JWT Auth
+# Authentication & Authorization
 gem "knock", "~> 2.1"
+gem "email_validator", "~> 1.6"
+gem "access-granted", "~> 1.3"
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-# gem 'rack-cors'
+gem 'rack-cors'
+
+gem "graphql", "~> 1.8"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem "rspec-rails", "~> 3.8"
   gem 'shoulda-matchers', '4.0.0.rc1'
+  gem 'factory_bot_rails'
 end
 
 group :development do
@@ -43,10 +48,9 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+gem "annotate", "~> 2.7"
 end
 
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 # gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-gem "access-granted", "~> 1.3"
