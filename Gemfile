@@ -29,6 +29,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem "knock", "~> 2.1"
 gem "email_validator", "~> 1.6"
 gem "access-granted", "~> 1.3"
+gem 'phonelib'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
@@ -48,6 +49,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem "graphiql-rails"
 gem "annotate", "~> 2.7"
 end
 
