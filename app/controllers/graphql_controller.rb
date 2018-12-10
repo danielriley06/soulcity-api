@@ -1,23 +1,47 @@
+# frozen_string_literal: true
+
+# Controller for the GraphQL API endpoint
 class GraphqlController < ApplicationController
+  before_action :authenticate_user
+
+  # rubocop:disable Metrics/MethodLength
   def execute
-    variables = ensure_hash(params[:variables])
-    query = params[:query]
-    operation_name = params[:operationName]
-    context = {
-      # Query context goes here, for example:
-      # current_user: current_user,
-    }
-    result = SoulcityApiSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    # rubocop:enable Metrics/MethodLength
+    if params[:query]
+      variables = ensure_hash(params[:variables])
+      result = SoulcityApiSchema.execute(
+        query: params[:query],
+        variables: variables,
+        context: context
+      )
+    else
+      result = SoulcityApiSchema.multiplex(
+        queries
+      )
+    end
     render json: result
-  rescue => e
-    raise e unless Rails.env.development?
-    handle_error_in_development e
   end
 
   private
 
-  # Handle form data, JSON body, or a blank value
+  def context
+    {
+      current_user: current_user
+    }
+  end
+
+  def queries
+    params.permit(_json: [:query, :operationName, { variables: {} }])
+          .to_hash['_json'].map do |query|
+      query.transform_keys do |k|
+        k.underscore.to_sym
+      end.merge(context: context)
+    end
+  end
+
+  # rubocop:disable Metrics/MethodLength
   def ensure_hash(ambiguous_param)
+    # rubocop:enable Metrics/MethodLength
     case ambiguous_param
     when String
       if ambiguous_param.present?
@@ -32,12 +56,5 @@ class GraphqlController < ApplicationController
     else
       raise ArgumentError, "Unexpected parameter: #{ambiguous_param}"
     end
-  end
-
-  def handle_error_in_development(e)
-    logger.error e.message
-    logger.error e.backtrace.join("\n")
-
-    render json: { error: { message: e.message, backtrace: e.backtrace }, data: {} }, status: 500
   end
 end
