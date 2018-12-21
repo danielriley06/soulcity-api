@@ -1,21 +1,22 @@
 # frozen_string_literal: true
 
 class UserTokenController < Knock::AuthTokenController
+  skip_before_action :verify_authenticity_token
   # Inherited Knock Controller
 
   # before_action :authenticate
 
-  # def create
-  #   render json: auth_token, status: :created
-  # end
+  def create
+    render json: auth_token, status: :created
+  end
 
-  # private
+  private
 
-  # def authenticate
-  #   unless entity.present? && entity.authenticate(auth_params[:password])
-  #     raise Knock.not_found_exception_class
-  #   end
-  # end
+  def authenticate
+    unless entity.present? && entity.authenticate(auth_params[:password])
+      render json: { error: 'Unauthorized' }, status: :unauthorized
+    end
+  end
 
   # def auth_token
   #   if entity.respond_to? :to_token_payload

@@ -5,22 +5,36 @@ require 'rails_helper'
 #
 # Table name: users
 #
-#  id                :bigint(8)        not null, primary key
-#  confirmed         :boolean          default(FALSE), not null
-#  email             :string           not null
-#  first_name        :string
-#  last_name         :string
-#  password_digest   :string
-#  phone_number      :string           not null
-#  role              :integer          default("member"), not null
-#  verification_code :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id                   :bigint(8)        not null, primary key
+#  active               :boolean          default(TRUE), not null
+#  cellphone            :string
+#  cellphone_verified   :boolean          default(FALSE), not null
+#  club_role            :integer          default("player"), not null
+#  country_code         :string
+#  date_of_birth        :datetime
+#  email                :string           not null
+#  email_verified       :boolean          default(FALSE), not null
+#  first_name           :string           not null
+#  gender               :integer          default("not_specified"), not null
+#  invite_accepted      :boolean          default(FALSE), not null
+#  invite_token         :string
+#  invited_to_dashboard :boolean          default(FALSE), not null
+#  is_club_owner        :boolean          default(FALSE), not null
+#  last_name            :string           not null
+#  middle_name          :string
+#  notify               :boolean          default(TRUE), not null
+#  password_digest      :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  authy_id             :string
+#  club_id              :bigint(8)
 #
 # Indexes
 #
-#  index_users_on_email  (email)
-#  index_users_on_role   (role)
+#  index_users_on_club_id    (club_id)
+#  index_users_on_club_role  (club_role)
+#  index_users_on_email      (email)
+#  index_users_on_gender     (gender)
 #
 
 RSpec.describe User, type: :model do

@@ -10,34 +10,161 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_09_093938) do
+ActiveRecord::Schema.define(version: 2018_12_06_072456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "blog_posts", force: :cascade do |t|
-    t.string "title", null: false
-    t.json "body", null: false
-    t.bigint "author_id"
-    t.datetime "published_at"
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "street"
+    t.string "street2"
+    t.string "city"
+    t.string "state"
+    t.string "zip_code"
+    t.decimal "latitude", precision: 15, scale: 10
+    t.decimal "longitude", precision: 15, scale: 10
+    t.text "verification_info"
+    t.text "original_attributes"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["author_id"], name: "index_blog_posts_on_author_id"
+    t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
+  create_table "age_groups", force: :cascade do |t|
+    t.string "title"
+    t.integer "max_age"
+  end
+
+  create_table "clubs", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "divisions", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "ancestry"
+    t.index ["ancestry"], name: "index_divisions_on_ancestry"
+  end
+
+  create_table "households", force: :cascade do |t|
+    t.string "name", null: false
+  end
+
+  create_table "invites", force: :cascade do |t|
+    t.string "email"
+    t.string "cellphone"
+    t.string "token"
+    t.integer "sender_id"
+    t.integer "recipient_id"
+    t.integer "invitable_id"
+    t.string "invitable_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cellphone"], name: "index_invites_on_cellphone"
+    t.index ["email"], name: "index_invites_on_email"
+    t.index ["invitable_id", "invitable_type"], name: "index_invites_on_invitable_id_and_invitable_type"
+    t.index ["recipient_id"], name: "index_invites_on_recipient_id"
+    t.index ["sender_id"], name: "index_invites_on_sender_id"
+    t.index ["token"], name: "index_invites_on_token"
+  end
+
+  create_table "season_teams", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.bigint "season_id", null: false
+    t.bigint "division_id", null: false
+    t.boolean "active", default: false, null: false
+    t.index ["active"], name: "index_season_teams_on_active"
+    t.index ["division_id"], name: "index_season_teams_on_division_id"
+    t.index ["season_id"], name: "index_season_teams_on_season_id"
+    t.index ["team_id", "active"], name: "index_season_teams_on_team_id_and_active", unique: true
+    t.index ["team_id", "season_id"], name: "index_season_teams_on_team_id_and_season_id", unique: true
+    t.index ["team_id"], name: "index_season_teams_on_team_id"
+  end
+
+  create_table "seasons", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.boolean "active", default: true, null: false
+  end
+
+  create_table "team_rosters", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.bigint "season_id", null: false
+    t.bigint "user_id", null: false
+    t.string "roles", default: [], array: true
+    t.boolean "active", default: true, null: false
+    t.string "position"
+    t.index ["season_id"], name: "index_team_rosters_on_season_id"
+    t.index ["team_id"], name: "index_team_rosters_on_team_id"
+    t.index ["user_id"], name: "index_team_rosters_on_user_id"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name"
+    t.integer "level", default: 1, null: false
+    t.integer "gender", default: 1, null: false
+    t.string "zip_code"
+    t.string "time_zone"
+    t.bigint "club_id", null: false
+    t.bigint "division_id"
+    t.bigint "age_group_id"
+    t.index ["age_group_id"], name: "index_teams_on_age_group_id"
+    t.index ["club_id"], name: "index_teams_on_club_id"
+    t.index ["division_id"], name: "index_teams_on_division_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest"
-    t.string "phone_number", null: false
-    t.string "first_name"
-    t.string "last_name"
-    t.integer "role", default: 2, null: false
-    t.string "verification_code"
-    t.boolean "confirmed", default: false, null: false
+    t.string "first_name", null: false
+    t.string "middle_name"
+    t.string "last_name", null: false
+    t.datetime "date_of_birth"
+    t.string "cellphone"
+    t.string "authy_id"
+    t.string "country_code"
+    t.boolean "cellphone_verified", default: false, null: false
+    t.boolean "email_verified", default: false, null: false
+    t.integer "club_role", default: 1, null: false
+    t.integer "gender", default: 1, null: false
+    t.boolean "active", default: true, null: false
+    t.boolean "invited_to_dashboard", default: false, null: false
+    t.boolean "invite_accepted", default: false, null: false
+    t.string "invite_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_club_owner", default: false, null: false
+    t.boolean "notify", default: true, null: false
+    t.bigint "club_id"
+    t.index ["club_id"], name: "index_users_on_club_id"
+    t.index ["club_role"], name: "index_users_on_club_role"
     t.index ["email"], name: "index_users_on_email"
-    t.index ["role"], name: "index_users_on_role"
+    t.index ["gender"], name: "index_users_on_gender"
   end
 
 end

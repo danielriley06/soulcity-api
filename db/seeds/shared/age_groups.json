@@ -1,0 +1,84 @@
+{
+  "records": [
+    {
+      "sprig_id": 1,
+      "title": "5 & under",
+      "max_age": 5
+    },
+    {
+      "sprig_id": 2,
+      "title": "6 & under",
+      "max_age": 6
+    },
+    {
+      "sprig_id": 3,
+      "title": "7 & under",
+      "max_age": 7
+    },
+    {
+      "sprig_id": 4,
+      "title": "8 & under",
+      "max_age": 8
+    },
+    {
+      "sprig_id": 5,
+      "title": "9 & under",
+      "max_age": 9
+    },
+    {
+      "sprig_id": 6,
+      "title": "10 & under",
+      "max_age": 10
+    },
+    {
+      "sprig_id": 7,
+      "title": "11 & under",
+      "max_age": 11
+    },
+    {
+      "sprig_id": 8,
+      "title": "12 & under",
+      "max_age": 12
+    },
+    {
+      "sprig_id": 9,
+      "title": "13 & under",
+      "max_age": 13
+    },
+    {
+      "sprig_id": 10,
+      "title": "14 & under",
+      "max_age": 14
+    },
+    {
+      "sprig_id": 11,
+      "title": "15 & under",
+      "max_age": 15
+    },
+    {
+      "sprig_id": 12,
+      "title": "16 & under",
+      "max_age": 16
+    },
+    {
+      "sprig_id": 13,
+      "title": "17 & under",
+      "max_age": 17
+    },
+    {
+      "sprig_id": 14,
+      "title": "18 & under",
+      "max_age": 18
+    },
+    {
+      "sprig_id": 15,
+      "title": "19 & under",
+      "max_age": 19
+    },
+    {
+      "sprig_id": 16,
+      "title": "Adult",
+      "max_age": null
+    }
+  ]
+}

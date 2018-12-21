@@ -1,0 +1,7 @@
+# HTTP Dev Enviroment
+web: rails s -p 3000
+
+# HTTPS Dev Enviroment
+# web: rails s -b 'ssl://localhost:3000?key=localhost.key&cert=localhost.crt'
+
+worker: bundle exec sidekiq -e development

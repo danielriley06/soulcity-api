@@ -1,47 +1,47 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.5.1'
+ruby '2.5.3'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.1'
-# Use postgresql as the database for Active Record
+gem 'rails', '~> 5.2.2'
 gem 'pg', '>= 0.18', '< 2.0'
-# Use Puma as the app server
+gem "sequel-rails"
 gem 'puma', '~> 3.11'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-# gem 'jbuilder', '~> 2.5'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
-# Use ActiveModel has_secure_password
+gem 'redis', '~> 4.0'
 gem 'bcrypt', '~> 3.1.7'
-
-# Use ActiveStorage variant
-# gem 'mini_magick', '~> 4.8'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
 # Authentication & Authorization
 gem "knock", "~> 2.1"
+gem "authy", "~> 2.7"
+gem "twilio-ruby", "~> 5.17"
 gem "email_validator", "~> 1.6"
 gem "access-granted", "~> 1.3"
 gem 'phonelib'
-
-# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
 gem "graphql", "~> 1.8"
+gem 'apollo_upload_server', '2.0.0.beta.1'
+gem "ancestry", "~> 3.0"
+
+gem "sprig", "~> 0.3.0"
+
+gem "search_object", "~> 1.2"
+gem "search_object_graphql", "~> 0.1"
+
+gem "graphql-query-resolver", "~> 0.2.0"
+
+gem "mainstreet", "~> 0.2.0"
+
+gem "sidekiq", "~> 5.2"
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem "rspec-rails", "~> 3.8"
   gem 'shoulda-matchers', '4.0.0.rc1'
   gem 'factory_bot_rails'
+  gem 'awesome_print'
+  gem "ffaker", "~> 2.10"
 end
 
 group :development do
@@ -50,11 +50,12 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem "graphiql-rails"
-gem "annotate", "~> 2.7"
+  gem "annotate", "~> 2.7"
+  gem "letter_opener", "~> 1.6"
 end
 
+gem "rollbar", "~> 2.18"
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-# gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem "bitly", "~> 1.1"
 
-gem "ancestry", "~> 3.0"
+gem "kaminari", "~> 1.1"

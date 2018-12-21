@@ -1,0 +1,38 @@
+{
+  "records": [
+    {
+      "sprig_id": 20,
+      "email": "hello@danriley.me",
+      "password": "Carlee88",
+      "password_confirmation": "Carlee88",
+      "first_name": "Dan",
+      "last_name": "Riley",
+      "club_role": "staff",
+      "gender": "male",
+      "cellphone_verified": true,
+      "email_verified": true,
+      "cellphone": 9016260345,
+      "invited_to_dashboard": true,
+      "invite_accepted": true,
+      "date_of_birth": "<%= DateTime.parse('1988-02-11') %>",
+      "is_club_owner": true
+    },
+    {
+      "sprig_id": 21,
+      "email": "ltkuhlman@gmail.com",
+      "password": "password123",
+      "password_confirmation": "password123",
+      "first_name": "Taylor",
+      "last_name": "Kuhlman",
+      "club_role": "staff",
+      "gender": "male",
+      "cellphone_verified": true,
+      "email_verified": true,
+      "cellphone": 9016260345,
+      "invited_to_dashboard": true,
+      "invite_accepted": true,
+      "date_of_birth": "<%= DateTime.parse('1988-02-11') %>",
+      "is_club_owner": true
+    }
+  ]
+}
