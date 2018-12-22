@@ -10,10 +10,10 @@ module Types
     field :middle_name, String, null: true
     field :last_name, String, null: false
     field :email, String, null: false
-    field :cellphone, String, null: true
+    field :mobile_number, String, null: true
     field :club_role, String, null: false
     field :gender, Types::GenderEnum, null: false
-    field :cellphone_verified, Boolean, null: false
+    field :mobile_number_verified, Boolean, null: false
     field :email_verified, Boolean, null: false
     field :invited_to_dashboard, Boolean, null: false
     field :invite_accepted, Boolean, null: false

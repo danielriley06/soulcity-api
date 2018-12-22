@@ -9,13 +9,15 @@
       "last_name": "Riley",
       "club_role": "staff",
       "gender": "male",
-      "cellphone_verified": true,
+      "mobile_number_verified": true,
       "email_verified": true,
-      "cellphone": 9016260345,
+      "mobile_number": 9016260345,
       "invited_to_dashboard": true,
       "invite_accepted": true,
       "date_of_birth": "<%= DateTime.parse('1988-02-11') %>",
-      "is_club_owner": true
+      "is_club_owner": true,
+      "club_id": "<%= sprig_record(Club, 19).id %>",
+      "household_id": "<%= sprig_record(Household, 17).id %>"
     },
     {
       "sprig_id": 21,
@@ -26,13 +28,15 @@
       "last_name": "Kuhlman",
       "club_role": "staff",
       "gender": "male",
-      "cellphone_verified": true,
+      "mobile_number_verified": true,
       "email_verified": true,
-      "cellphone": 9016260345,
+      "mobile_number": 9016260345,
       "invited_to_dashboard": true,
       "invite_accepted": true,
       "date_of_birth": "<%= DateTime.parse('1988-02-11') %>",
-      "is_club_owner": true
+      "is_club_owner": true,
+      "club_id": "<%= sprig_record(Club, 19).id %>",
+      "household_id": "<%= sprig_record(Household, 18).id %>"
     }
   ]
 }

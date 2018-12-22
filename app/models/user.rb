@@ -1,39 +1,39 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: users
 #
-#  id                   :bigint(8)        not null, primary key
-#  active               :boolean          default(TRUE), not null
-#  cellphone            :string
-#  cellphone_verified   :boolean          default(FALSE), not null
-#  club_role            :integer          default("player"), not null
-#  country_code         :string
-#  date_of_birth        :datetime
-#  email                :string           not null
-#  email_verified       :boolean          default(FALSE), not null
-#  first_name           :string           not null
-#  gender               :integer          default("not_specified"), not null
-#  invite_accepted      :boolean          default(FALSE), not null
-#  invite_token         :string
-#  invited_to_dashboard :boolean          default(FALSE), not null
-#  is_club_owner        :boolean          default(FALSE), not null
-#  last_name            :string           not null
-#  middle_name          :string
-#  notify               :boolean          default(TRUE), not null
-#  password_digest      :string
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  authy_id             :string
-#  club_id              :bigint(8)
+#  id                         :bigint(8)        not null, primary key
+#  active                     :boolean          default(TRUE), not null
+#  club_role                  :integer          default("player"), not null
+#  date_of_birth              :datetime
+#  email                      :string           not null
+#  email_verified             :boolean          default(FALSE), not null
+#  first_name                 :string           not null
+#  gender                     :integer          default("not_specified"), not null
+#  invite_accepted            :boolean          default(FALSE), not null
+#  invite_token               :string
+#  invited_to_dashboard       :boolean          default(FALSE), not null
+#  is_club_owner              :boolean          default(FALSE), not null
+#  last_name                  :string           not null
+#  middle_name                :string
+#  mobile_number              :string(16)
+#  mobile_number_country_code :string(2)
+#  mobile_number_verified     :boolean          default(FALSE), not null
+#  password_digest            :string
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  authy_id                   :string
+#  club_id                    :integer          not null
+#  household_id               :integer
 #
 # Indexes
 #
-#  index_users_on_club_id    (club_id)
-#  index_users_on_club_role  (club_role)
-#  index_users_on_email      (email)
-#  index_users_on_gender     (gender)
+#  index_users_on_club_id       (club_id)
+#  index_users_on_club_role     (club_role)
+#  index_users_on_email         (email)
+#  index_users_on_gender        (gender)
+#  index_users_on_household_id  (household_id)
 #
 
 class User < ApplicationRecord
@@ -54,6 +54,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_one :address
   belongs_to :club
+  belongs_to :household
   has_many :team_rosters
   has_many :active_rosters, -> { where(active: true) }, class_name: 'TeamRoster'
   has_many :teams, through: :active_rosters
@@ -61,7 +62,7 @@ class User < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, uniqueness: true, email: { strict_mode: true }
-  validates :cellphone, phone: { allow_blank: true }
+  validates :mobile_number, phone: { allow_blank: true }
   # validates :mobile_number_country_code, presence: true, length: { is: 2 }
   validates :club_role, presence: true
 

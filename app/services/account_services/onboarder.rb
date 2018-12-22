@@ -6,22 +6,15 @@ module AccountServices
       new(user_attributes, options).perform
     end
 
-    def initialize(user_attributes, options)
-      @user_attributes = user_attributes
-      @options = options
+    def initialize(user_id, invite_user_to_dashboard)
+      @user = User.find(user_id)
+      @invite_user_to_dashboard = invite_user_to_dashboard
     end
     private_class_method :new
 
     def perform
-      @user = User.new(@user_attributes)
-      generate_invite_token
-      @user.save!
       register_authy_user
       send_dashboard_invite
-    end
-
-    def generate_invite_token
-      @user.invite_token = SecureRandom.hex(20).encode('UTF-8')
     end
 
     def register_authy_user
@@ -32,7 +25,7 @@ module AccountServices
     end
 
     def send_dashboard_invite
-      return unless @options[:invite_user_to_dashboard] == true &&
+      return unless @invite_user_to_dashboard == true &&
                     Rails.env == 'production'
 
       AccountServices::SendDashboardInvite.call(@user)

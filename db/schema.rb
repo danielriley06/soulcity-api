@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_06_072456) do
+ActiveRecord::Schema.define(version: 2018_12_04_010139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,26 +145,27 @@ ActiveRecord::Schema.define(version: 2018_12_06_072456) do
     t.string "middle_name"
     t.string "last_name", null: false
     t.datetime "date_of_birth"
-    t.string "cellphone"
+    t.string "mobile_number", limit: 16
+    t.string "mobile_number_country_code", limit: 2
     t.string "authy_id"
-    t.string "country_code"
-    t.boolean "cellphone_verified", default: false, null: false
+    t.boolean "mobile_number_verified", default: false, null: false
     t.boolean "email_verified", default: false, null: false
     t.integer "club_role", default: 1, null: false
     t.integer "gender", default: 1, null: false
     t.boolean "active", default: true, null: false
     t.boolean "invited_to_dashboard", default: false, null: false
     t.boolean "invite_accepted", default: false, null: false
+    t.boolean "is_club_owner", default: false, null: false
     t.string "invite_token"
+    t.integer "club_id", null: false
+    t.integer "household_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "is_club_owner", default: false, null: false
-    t.boolean "notify", default: true, null: false
-    t.bigint "club_id"
     t.index ["club_id"], name: "index_users_on_club_id"
     t.index ["club_role"], name: "index_users_on_club_role"
     t.index ["email"], name: "index_users_on_email"
     t.index ["gender"], name: "index_users_on_gender"
+    t.index ["household_id"], name: "index_users_on_household_id"
   end
 
 end

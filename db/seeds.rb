@@ -10,4 +10,4 @@
 
 include Sprig::Helpers
 
-sprig_shared [User, AgeGroup]
+sprig_shared [User, AgeGroup, Club, Household]
