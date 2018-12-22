@@ -5,7 +5,6 @@ ruby '2.5.3'
 
 gem 'rails', '~> 5.2.2'
 gem 'pg', '>= 0.18', '< 2.0'
-gem "sequel-rails"
 gem 'puma', '~> 3.11'
 gem 'redis', '~> 4.0'
 gem 'bcrypt', '~> 3.1.7'
