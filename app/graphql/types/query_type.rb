@@ -2,25 +2,22 @@
 
 module Types
   class QueryType < BaseObject
+    graphql_name 'Query'
     include QueryTypes::AgeGroup
 
-    field :seasons, [Types::SeasonType], null: false do
-      description 'returns a list of active seasons'
-    end
-
-    def seasons
-      ::Season.where(active: true)
-    end
-
     field :current_user, Types::UserType, null: false do
-      description 'returns the queried user'
+      description 'returns the current user making the request'
     end
 
     def current_user
       User.includes(:avatar_attachment, teams: %i[age_group club]).find_by!(id: context[:current_user])
     end
 
-    field :divisions, [Types::DivisionType], null: true
+    field :seasons, resolver: Resolvers::SeasonsResolver,
+                    description: "A list of the club's seasons."
+
+    field :divisions, resolver: Resolvers::DivisionsResolver,
+                      description: "A list of the club's divisions."
 
     field :all_divisions, [Types::DivisionType], null: true
 

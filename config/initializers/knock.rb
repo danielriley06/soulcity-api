@@ -8,7 +8,7 @@ Knock.setup do |config|
   ## last forever.
   ##
   ## Default:
-  # config.token_lifetime = 1.day
+  config.token_lifetime = Rails.env.production? ? 1.day : nil
 
   ## Audience claim
   ## --------------

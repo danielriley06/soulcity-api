@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Types
-  class UserType < BaseObject
+  class BaseUserType < BaseObject
     graphql_name 'User'
-    description 'Data of the Current User'
+    description 'Data of a user'
 
     field :id, ID, null: false
     field :first_name, String, null: false
@@ -23,7 +23,5 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :avatar_link, String, null: true
-    field :club, Types::ClubType, null: true
-    field :teams, [Types::TeamType], null: true
   end
 end

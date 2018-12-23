@@ -2,6 +2,7 @@
 
 module Types
   class DivisionType < Types::BaseObject
+    graphql_name 'Division'
     description 'Data of a division'
 
     field :id, ID, null: false

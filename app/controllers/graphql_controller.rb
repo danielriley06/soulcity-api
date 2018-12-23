@@ -7,18 +7,24 @@ class GraphqlController < ApplicationController
   # rubocop:disable Metrics/MethodLength
   def execute
     # rubocop:enable Metrics/MethodLength
-    if params[:query]
-      variables = ensure_hash(params[:variables])
-      result = SoulcityApiSchema.execute(
-        query: params[:query],
-        variables: variables,
-        context: context
-      )
-    else
-      result = SoulcityApiSchema.multiplex(
-        queries
-      )
-    end
+    result = if params[:_json]
+               queries = params[:_json].map do |param|
+                 {
+                   query: param[:query],
+                   operation_name: param[:operationName],
+                   variables: ensure_hash(param[:variables]),
+                   context: context
+                 }
+               end
+               SoulcityApiSchema.multiplex(queries)
+             else
+               SoulcityApiSchema.execute(
+                 params[:query],
+                 operation_name: params[:operationName],
+                 variables: ensure_hash(params[:variables]),
+                 context: context
+               )
+             end
     render body: result.to_json, content_type: 'application/json'
   end
 

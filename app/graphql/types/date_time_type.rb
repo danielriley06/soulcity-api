@@ -2,8 +2,8 @@
 
 module Types
   class ClubType < Types::BaseObject
-    graphql_name 'Club'
-    description 'Data of a club'
+    graphql_name 'DateTime'
+    description 'Data '
 
     field :id, ID, null: false
     field :name, String, null: false

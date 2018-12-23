@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class SoulcityApiSchema < GraphQL::Schema
+  max_depth 10
+  default_max_page_size 100
+
   mutation(Types::MutationType)
   query(Types::QueryType)
-
-  # Default maximum for all Relay connections that do not specify max_page_size
-  default_max_page_size 100
 
   def self.id_from_object(object, type_definition, _query_ctx)
     GraphQL::Schema::UniqueWithinType.encode(type_definition.name, object.id)

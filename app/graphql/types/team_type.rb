@@ -2,6 +2,7 @@
 
 module Types
   class TeamType < Types::BaseObject
+    graphql_name 'Team'
     description 'Data of a team'
 
     field :id, ID, null: false

@@ -2,6 +2,7 @@
 
 module Types
   class SeasonType < Types::BaseObject
+    graphql_name 'Season'
     description 'Data of a season'
 
     field :id, ID, null: false

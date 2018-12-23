@@ -2,6 +2,7 @@
 
 module Types
   class AgeGroupType < Types::BaseObject
+    graphql_name 'AgeGroup'
     description 'Data of a age group'
 
     field :id, ID, null: false

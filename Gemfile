@@ -4,35 +4,51 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.5.3'
 
 gem 'rails', '~> 5.2.2'
-gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'redis', '~> 4.0'
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', '>= 1.1.0', require: false
 
+# Improves copy-on-write performance for MRI
+gem 'nakayoshi_fork', '~> 0.0.4'
+
+# Database/PG support
+gem 'pg', '>= 0.18', '< 2.0'
+gem 'ctes_in_my_pg', github: 'kmurph73/ctes_in_my_pg', branch: 'rails-5-2-0'
+gem "ancestry", "~> 3.0"
+gem "search_object", "~> 1.2"
+gem "search_object_graphql", "~> 0.1"
+gem "mainstreet", "~> 0.2.0"
+
 # Authentication & Authorization
 gem "knock", "~> 2.1"
-gem "authy", "~> 2.7"
-gem "twilio-ruby", "~> 5.17"
 gem "email_validator", "~> 1.6"
 gem "access-granted", "~> 1.3"
 gem 'phonelib'
 gem 'rack-cors'
 
+# GraphQL API
 gem "graphql", "~> 1.8"
 gem 'apollo_upload_server', '2.0.0.beta.1'
-gem "ancestry", "~> 3.0"
-
-gem "sprig", "~> 0.3.0"
-
-gem "search_object", "~> 1.2"
-gem "search_object_graphql", "~> 0.1"
-
 gem "graphql-query-resolver", "~> 0.2.0"
 
-gem "mainstreet", "~> 0.2.0"
+# Pagination
+gem "kaminari", "~> 1.1"
 
-gem "sidekiq", "~> 5.2"
+# Seed data
+gem "sprig", "~> 0.3.0"
+
+# Background jobs
+gem 'sidekiq', '~> 5.2.1'
+gem 'sidekiq-cron', '~> 1.0.4'
+gem 'redis-namespace', '~> 1.6.0'
+
+# Twilio integration
+gem "authy", "~> 2.7"
+gem "twilio-ruby", "~> 5.17"
+
+# Bitly integration
+gem "bitly", "~> 1.1"
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -55,6 +71,5 @@ end
 
 gem "rollbar", "~> 2.18"
 
-gem "bitly", "~> 1.1"
 
-gem "kaminari", "~> 1.1"
+
