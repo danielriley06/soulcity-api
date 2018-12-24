@@ -16,7 +16,6 @@ gem 'nakayoshi_fork', '~> 0.0.4'
 gem 'pg', '>= 0.18', '< 2.0'
 gem "sequel-rails"
 gem 'ctes_in_my_pg', github: 'kmurph73/ctes_in_my_pg', branch: 'rails-5-2-0'
-gem "ancestry", "~> 3.0"
 gem "search_object", "~> 1.2"
 gem "search_object_graphql", "~> 0.1"
 gem "mainstreet", "~> 0.2.0"

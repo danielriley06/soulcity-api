@@ -15,8 +15,6 @@
 #
 
 class Division < ApplicationRecord
-  has_ancestry
-
   def ancestor_name
     ancestors.first&.name
   end
