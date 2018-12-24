@@ -5,7 +5,6 @@ ruby '2.5.3'
 
 gem 'rails', '~> 5.2.2'
 gem 'puma', '~> 3.11'
-gem 'puma_worker_killer'
 gem 'redis', '~> 4.0'
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', '>= 1.1.0', require: false
@@ -15,6 +14,7 @@ gem 'nakayoshi_fork', '~> 0.0.4'
 
 # Database/PG support
 gem 'pg', '>= 0.18', '< 2.0'
+gem "sequel-rails"
 gem 'ctes_in_my_pg', github: 'kmurph73/ctes_in_my_pg', branch: 'rails-5-2-0'
 gem "ancestry", "~> 3.0"
 gem "search_object", "~> 1.2"
@@ -23,15 +23,28 @@ gem "mainstreet", "~> 0.2.0"
 
 # Authentication & Authorization
 gem "knock", "~> 2.1"
-gem "email_validator", "~> 1.6"
+gem "jwt", "~> 1.5"
 gem "access-granted", "~> 1.3"
-gem 'phonelib'
 gem 'rack-cors'
 
 # GraphQL API
 gem "graphql", "~> 1.8"
 gem 'apollo_upload_server', '2.0.0.beta.1'
 gem "graphql-query-resolver", "~> 0.2.0"
+
+# Redis
+gem 'redis', '~> 4.0'
+gem "connection_pool", "~> 2.2"
+
+# File Attachments
+gem 'shrine', '~> 2.1'
+gem "aws-sdk-s3", "~> 1.30"
+gem "image_processing", "~> 1.7"
+
+# Validation libs
+gem "email_validator", "~> 1.6"
+gem 'phonelib', "~> 0.6"
+
 
 # Pagination
 gem "kaminari", "~> 1.1"
@@ -69,8 +82,3 @@ group :development do
   gem "annotate", "~> 2.7"
   gem "letter_opener", "~> 1.6"
 end
-
-gem "rollbar", "~> 2.18"
-
-
-
