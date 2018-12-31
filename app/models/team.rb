@@ -21,46 +21,32 @@
 #  index_teams_on_division_id   (division_id)
 #
 
-class Team < ApplicationRecord
-  enum level: {
-    not_given: 1,
-    recreational: 2,
-    competitive: 3,
-    school: 4
-  }
-
-  enum gender: {
-    coed: 1,
-    male: 2,
-    female: 3
-  }
-
-  belongs_to :club
-  belongs_to :age_group
-  # SeasonTeams Join table creates the seasons for a team,
-  # each team is assigned to a Season and a Division each season.
-  # Note: A team can only have one active season at a time
-  has_many :season_teams
-  has_one :active_season_team,
-          -> { where(active: true) },
-          class_name: 'SeasonTeam'
+class Team < Sequel::Model
+  many_to_one :club
+  many_to_one :age_group
   # Seasons
-  has_many :seasons, through: :season_teams
-  has_one :season,
-          through: :active_season_team,
-          class_name: 'Season'
+  one_through_one :season,
+                  class: :Season,
+                  left_key: :team_id,
+                  right_key: :season_id,
+                  join_table: :season_teams, conditions: { is_active: true }
+  many_to_many :archived_seasons, clone: :season, conditions: { is_active: false }
   # Divisions
-  has_many :divisions, through: :season_teams
-  has_one :division,
-          through: :active_season_team,
-          class_name: 'Division'
-  # Rosters
-  has_many :team_rosters
-  has_many :active_rosters, -> { where(active: true) }, class_name: 'TeamRoster'
-  has_many :members,
-           through: :active_rosters,
-           source: :user
+  one_through_one :division,
+                  class: :Division,
+                  left_key: :team_id,
+                  right_key: :division_id,
+                  join_table: :season_teams, conditions: { is_active: true }
+  # Members
+  many_to_many :members,
+               class: :User,
+               left_key: :team_id,
+               right_key: :user_id,
+               join_table: :team_rosters, conditions: { is_active: true }
+  many_to_many :former_members, clone: :members, conditions: { is_active: false }
 
-  validates :club, presence: true
-  validates :name, presence: true
+  def validate
+    super
+    validates_presence %i[name club]
+  end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: age_groups
@@ -7,6 +9,10 @@
 #  title   :string
 #
 
-class AgeGroup < ApplicationRecord
-  validates :title, presence: true, uniqueness: { case_sensitive: false }
+class AgeGroup < Sequel::Model
+  def validate
+    super
+    validates_presence %i[title]
+    validates_unique :title
+  end
 end

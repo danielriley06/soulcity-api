@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: team_rosters
@@ -18,17 +19,17 @@
 #  index_team_rosters_on_user_id    (user_id)
 #
 
-class TeamRoster < ApplicationRecord
-  belongs_to :team
-  belongs_to :season
-  belongs_to :user
+class TeamRoster < Sequel::Model
+  many_to_many :teams
+  one_through_one :seasons
+  one_through_one :users
 
-  validates :team, presence: true
-  validates :season, presence: true
-  validates :user, presence: true
-  validates :active, presence: true
+  def validate
+    super
+    validates_presence %i[team_id season_id user_id]
+  end
 
   def self.active
-    joins(:season).where(active: true, season: { active: true })
+    joins(:season).where(is_active: true, season: { active: true })
   end
 end

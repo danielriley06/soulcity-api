@@ -1,13 +1,3 @@
-GIT
-  remote: https://github.com/kmurph73/ctes_in_my_pg.git
-  revision: 72bc02f1c1ef883ec0cfc9340b2bda4f14feb75e
-  branch: rails-5-2-0
-  specs:
-    ctes_in_my_pg (0.1.0)
-      activerecord (>= 5.2.0)
-      arel (>= 7.0.0)
-      pg
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -55,11 +45,16 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    ancestry (3.0.5)
-      activerecord (>= 3.2.0)
     annotate (2.7.4)
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 13.0)
+    anycable (0.6.0)
+      anyway_config (~> 1.4.1)
+      grpc (~> 1.15)
+    anycable-rails (0.6.1)
+      anycable (~> 0.6.0)
+      rails (>= 5)
+    anyway_config (1.4.1)
     apollo_upload_server (2.0.0.beta.1)
       graphql (~> 1.7)
       rails (>= 4.2)
@@ -97,8 +92,7 @@ GEM
     diff-lcs (1.3)
     down (4.8.0)
       addressable (~> 2.5)
-    email_validator (1.6.0)
-      activemodel
+    dry-initializer (2.5.0)
     erubi (1.8.0)
     et-orbi (1.1.6)
       tzinfo
@@ -115,14 +109,21 @@ GEM
       et-orbi (~> 1.1, >= 1.1.6)
       raabro (~> 1.1)
     geocoder (1.5.0)
+    get_process_mem (0.2.3)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    google-protobuf (3.6.1)
+    googleapis-common-protos-types (1.0.2)
+      google-protobuf (~> 3.0)
     graphiql-rails (1.5.0)
       railties
       sprockets-rails
     graphql (1.8.11)
     graphql-query-resolver (0.2.0)
       graphql (~> 1.0, >= 1.0.0)
+    grpc (1.17.1)
+      google-protobuf (~> 3.1)
+      googleapis-common-protos-types (~> 1.0.0)
     httparty (0.16.3)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
@@ -133,7 +134,7 @@ GEM
       mini_magick (~> 4.0)
       ruby-vips (>= 2.0.13, < 3)
     jmespath (1.4.0)
-    jwt (1.5.6)
+    jwt (2.1.0)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.1.1)
@@ -146,10 +147,6 @@ GEM
       activerecord
       kaminari-core (= 1.1.1)
     kaminari-core (1.1.1)
-    knock (2.1.1)
-      bcrypt (~> 3.1)
-      jwt (~> 1.5)
-      rails (>= 4.2)
     launchy (2.4.3)
       addressable (~> 2.3)
     letter_opener (1.7.0)
@@ -158,6 +155,11 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
+    lograge (0.10.0)
+      actionpack (>= 4)
+      activesupport (>= 4)
+      railties (>= 4)
+      request_store (~> 1.0)
     loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -192,8 +194,14 @@ GEM
       rack (>= 1.2, < 3)
     pg (1.1.3)
     phonelib (0.6.28)
+    prometheus-client (0.8.0)
+      quantile (~> 0.2.1)
     public_suffix (3.0.3)
     puma (3.12.0)
+    puma_worker_killer (0.1.0)
+      get_process_mem (~> 0.2)
+      puma (>= 2.7, < 4)
+    quantile (0.2.1)
     raabro (1.1.6)
     rack (2.0.6)
     rack-cors (1.0.2)
@@ -232,6 +240,10 @@ GEM
     redis (4.1.0)
     redis-namespace (1.6.0)
       redis (>= 3.0.4)
+    request_store (1.4.1)
+      rack (>= 1.4)
+    rollbar (2.18.2)
+      multi_json
     rspec-core (3.8.0)
       rspec-support (~> 3.8.0)
     rspec-expectations (3.8.2)
@@ -249,6 +261,8 @@ GEM
       rspec-mocks (~> 3.8.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
+    rspec_sequel_matchers (0.5.0)
+      sequel (>= 3.8.0)
     ruby-vips (2.0.13)
       ffi (~> 1.9)
     ruby_dep (1.5.0)
@@ -262,8 +276,12 @@ GEM
       activemodel (>= 4.0.0)
       railties (>= 4.0.0)
       sequel (>= 3.28, < 6.0)
-    shoulda-matchers (4.0.0.rc1)
-      activesupport (>= 4.2.0)
+    sequel_pg (1.11.0)
+      pg (>= 0.18.0)
+      sequel (>= 4.38.0)
+    sequel_secure_password (0.2.15)
+      bcrypt (>= 3.1, < 4.0)
+      sequel (>= 4.1.0, < 6.0)
     shrine (2.13.0)
       down (~> 4.1)
     sidekiq (5.2.3)
@@ -273,7 +291,6 @@ GEM
     sidekiq-cron (1.0.4)
       fugit (~> 1.1)
       sidekiq (>= 4.2.1)
-    sprig (0.3.0)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -297,14 +314,19 @@ GEM
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
+    yabeda (0.1.3)
+      concurrent-ruby
+      dry-initializer
+    yabeda-prometheus (0.1.4)
+      yabeda
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   access-granted (~> 1.3)
-  ancestry (~> 3.0)
   annotate (~> 2.7)
+  anycable-rails (~> 0.6.0)
   apollo_upload_server (= 2.0.0.beta.1)
   authy (~> 2.7)
   awesome_print
@@ -314,40 +336,45 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
   connection_pool (~> 2.2)
-  ctes_in_my_pg!
-  email_validator (~> 1.6)
-  factory_bot_rails
+  factory_bot (~> 4.1)
+  factory_bot_rails (~> 4.0)
   ffaker (~> 2.10)
   graphiql-rails
   graphql (~> 1.8)
   graphql-query-resolver (~> 0.2.0)
   image_processing (~> 1.7)
-  jwt (~> 1.5)
+  jwt (~> 2.1)
   kaminari (~> 1.1)
-  knock (~> 2.1)
   letter_opener (~> 1.6)
   listen (>= 3.0.5, < 3.2)
+  lograge
   mainstreet (~> 0.2.0)
   nakayoshi_fork (~> 0.0.4)
   pg (>= 0.18, < 2.0)
   phonelib (~> 0.6)
-  puma (~> 3.11)
+  prometheus-client
+  puma (~> 3.0)
+  puma_worker_killer
   rack-cors
   rails (~> 5.2.2)
-  redis (~> 4.0)
+  redis
   redis-namespace (~> 1.6.0)
+  rollbar
   rspec-rails (~> 3.8)
+  rspec_sequel_matchers
   search_object (~> 1.2)
   search_object_graphql (~> 0.1)
   sequel-rails
-  shoulda-matchers (= 4.0.0.rc1)
+  sequel_pg
+  sequel_secure_password
   shrine (~> 2.1)
   sidekiq (~> 5.2.1)
   sidekiq-cron (~> 1.0.4)
-  sprig (~> 0.3.0)
   spring
   spring-watcher-listen (~> 2.0.0)
   twilio-ruby (~> 5.17)
+  yabeda
+  yabeda-prometheus
 
 RUBY VERSION
    ruby 2.5.3p105

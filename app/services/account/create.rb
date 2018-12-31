@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module AccountServices
+module Account
   class Create
     def self.perform(user_attributes:)
       new(user_attributes).perform

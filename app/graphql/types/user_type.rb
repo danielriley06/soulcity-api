@@ -18,12 +18,12 @@ module Types
     field :invited_to_dashboard, Boolean, null: false
     field :invite_accepted, Boolean, null: false
     field :is_club_owner, Boolean, null: false
-    field :active, Boolean, null: false
+    field :account_is_active, Boolean, null: false
     field :date_of_birth, GraphQL::Types::ISO8601DateTime, null: true
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-    field :avatar_link, String, null: true
-    field :club, Types::ClubType, null: true
-    field :teams, [Types::TeamType], null: true
+    # field :avatar_link, String, null: true
+    field :club, Types::ClubType, hash_key: :club, null: true
+    field :teams, [Types::TeamType], hash_key: :teams, null: true
   end
 end

@@ -2,7 +2,7 @@
 
 # Controller for the GraphQL API endpoint
 class GraphqlController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_request
 
   # rubocop:disable Metrics/MethodLength
   def execute

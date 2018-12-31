@@ -1,0 +1,78 @@
+version: '3.4'
+
+services:
+  app: &app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: anycable-demo:0.6.0
+    volumes:
+      - .:/app:cached
+    tmpfs:
+      - /tmp
+  backend: &backend
+    <<: *app
+    volumes:
+      - .:/app:cached
+      - assets:/app/public/assets
+    environment:
+      - RAILS_ENV=${RAILS_ENV:-development}
+      - REDIS_URL=redis://redis:6379/0
+      - CABLE_URL=ws://localhost:8080/cable
+      - ADAPTER=any_cable
+    depends_on:
+      - redis
+      - postgres
+  runner:
+    <<: *backend
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+    ports:
+      - '3000:3000'
+      - '3002:3002'
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: soulcity
+      POSTGRES_PASSWORD: carlee
+    volumes:
+      - soulcity:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+  web:
+    <<: *backend
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: rails server
+    ports:
+      - 3000
+    depends_on:
+      - rpc
+      - ws
+  rpc:
+    <<: *backend
+    command: anycable
+  redis:
+    image: redis:3.2-alpine
+    volumes:
+      - redis:/data
+    ports:
+      - 6379
+  ws:
+    image: 'anycable/anycable-go:v0.6.0'
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - REDIS_URL=redis://redis:6379/0
+      - ANYCABLE_RPC_HOST=rpc:50051
+    depends_on:
+      - redis
+      - rpc
+
+volumes:
+  redis:
+  soulcity:
+  assets:

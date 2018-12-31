@@ -15,7 +15,7 @@ module Resolvers
                              description: 'Fetch the {nth} page of divisions'
 
     def resolve(active: true, page: 1, limit: 25)
-      Division.page(page).limit(limit)
+      Division.dataset.paginate(page, limit)
     end
   end
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -36,45 +37,39 @@
 #  index_users_on_household_id  (household_id)
 #
 
-class User < ApplicationRecord
-  enum club_role: {
-    player: 1,
-    guardian: 2,
-    staff: 3
-  }
+class User < Sequel::Model
+  EMAIL_REGEX = /\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}/i.freeze
+  plugin :secure_password
 
-  enum gender: {
-    not_specified: 1,
-    male: 2,
-    female: 3,
-    other: 4
-  }
+  many_to_one :address
+  many_to_one :club
+  many_to_one :household
+  many_to_many :teams, class: :Team, left_key: :user_id, right_key: :team_id,
+                       join_table: :team_rosters, conditions: { is_active: true }
+  many_to_many :archived_teams, class: :Team, left_key: :user_id, right_key: :team_id,
+                                join_table: :team_rosters, conditions: { is_active: false }
 
-  has_secure_password
-  has_one_attached :avatar
-  has_one :address
-  belongs_to :club
-  belongs_to :household
-  has_many :team_rosters
-  has_many :active_rosters, -> { where(active: true) }, class_name: 'TeamRoster'
-  has_many :teams, through: :active_rosters
-
-  validates :first_name, presence: true
-  validates :last_name, presence: true
-  validates :email, uniqueness: true, email: { strict_mode: true }
-  validates :mobile_number, phone: { allow_blank: true }
+  # TODO: Reimplement mobile validation and sanitization
+  # with sequel friendliness
+  # validates :mobile_number, phone: { allow_blank: true }
   # validates :mobile_number_country_code, presence: true, length: { is: 2 }
-  validates :club_role, presence: true
-
   # before_save :sanitize_mobile_number, if: :will_save_change_to_mobile_number?
 
+  def validate
+    super
+    validates_presence %i[first_name last_name club_role]
+    validates_unique %i[email mobile_number]
+    validates_format EMAIL_REGEX, :email
+  end
+
   def to_token_payload
+    expiration = Rails.application.credentials[:auth_token_lifetime] || 48.hours
     {
       user_id: id,
       sub: id,
       authorization: %w[admin user],
       type: 'account',
-      exp: Knock.token_lifetime.from_now.to_i
+      exp: expiration.from_now.to_i
     }
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: divisions
@@ -13,7 +15,7 @@
 #
 
 FactoryBot.define do
-  factory :division do
-    
+  factory :club do
+    name { 'Soul City' }
   end
 end

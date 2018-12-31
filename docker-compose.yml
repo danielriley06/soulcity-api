@@ -1,0 +1,94 @@
+version: "3.4"
+
+services:
+  db:
+    image: postgres:11.1-alpine
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:5.0-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    hostname: redis
+    volumes:
+      - redis:/data
+    ports:
+      - 6379
+
+  app:
+    depends_on:
+      - db
+      - redis
+    image: club-manager-api:0.0.2
+    build: .
+    environment:
+      - DB_HOST=db
+      - DB_USER=postgres
+      - RAILS_ENV=development
+      - SIDEKIQ_REDIS_URL=redis://redis:6379/0
+      - ANYCABLE_REDIS_URL=redis://redis:6379/5
+      - CABLE_URL=ws://localhost:8080/cable
+      - ADAPTER=any_cable
+    ports:
+      - "3000:3000"
+    command: ["./docker/wait-for", "db:5432", "--", "./docker/run.sh"]
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app
+
+  worker:
+    depends_on:
+      - app
+      - db
+      - redis
+    image: club-manager-worker:0.0.2
+    build: .
+    environment:
+      - DB_HOST=db
+      - DB_USER=postgres
+      - RAILS_ENV=development
+      - SIDEKIQ_REDIS_URL=redis://redis:6379/0
+      - ANYCABLE_REDIS_URL=redis://redis:6379/5
+      - CABLE_URL=ws://localhost:8080/cable
+      - ADAPTER=any_cable
+    volumes:
+      - .:/app
+    command: ["./docker/wait-for", "db:5432", "--", "bundle", "exec", "sidekiq"]
+
+  rpc:
+    depends_on:
+      - app
+      - db
+      - redis
+    image: club-manager-rpc-server:0.0.2
+    build: .
+    environment:
+      - DB_HOST=db
+      - DB_USER=postgres
+      - RAILS_ENV=development
+      - SIDEKIQ_REDIS_URL=redis://redis:6379/0
+      - ANYCABLE_REDIS_URL=redis://redis:6379/5
+      - CABLE_URL=ws://localhost:8080/cable
+      - ADAPTER=any_cable
+    volumes:
+      - .:/app
+    command:
+      ["./docker/wait-for", "db:5432", "--", "bundle", "exec", "anycable"]
+
+  ws:
+    image: "anycable/anycable-go:v0.6.0"
+    ports:
+      - "8080:8080"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8080
+      - ANYCABLE_REDIS_URL=redis://redis:6379/5
+      - ANYCABLE_RPC_HOST=rpc:50051
+    depends_on:
+      - redis
+      - rpc
+
+volumes:
+  db-data:
+  redis:

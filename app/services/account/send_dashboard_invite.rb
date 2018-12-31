@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module AccountServices
+module Account
   class SendDashboardInvite
     def call(user)
       if user.email.present?

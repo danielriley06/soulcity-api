@@ -29,13 +29,9 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  # Use a real queuing backend for Active Job (and separate queues per environment)
-  config.active_job.queue_adapter     = :sidekiq
-  config.active_job.queue_name_prefix = "soulcity-api_#{Rails.env}"
-
   # Store uploaded files on the local file system (see config/storage.yml for options)
   # config.active_storage.service = :local
-  Rails.application.routes.default_url_options[:host] = 'localhost:3000'
+  # Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
@@ -81,12 +77,12 @@ Rails.application.configure do
   config.sequel.load_database_tasks = false
 
   # This setting disabled the automatic connect after Rails init
-  # config.sequel.skip_connect = false
+  config.sequel.skip_connect = false
 
   # Configure if Sequel should try to 'test' the database connection in order
   # to fail early
-  config.sequel.test_connect = true
+  config.sequel.test_connect = false
 
   # If you want to use a specific logger
-  # config.sequel.logger = MyLogger.new($stdout)
+  config.sequel.logger = Logger.new($stdout)
 end

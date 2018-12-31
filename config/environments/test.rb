@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -29,7 +31,7 @@ Rails.application.configure do
   config.action_controller.allow_forgery_protection = false
 
   # Store uploaded files on the local file system in a temporary directory
-  config.active_storage.service = :test
+  # config.active_storage.service = :test
 
   config.action_mailer.perform_caching = false
 
@@ -43,4 +45,38 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  #######################
+  #### SEQUEL CONFIG ####
+  #######################
+  # Allowed options: :sql, :ruby.
+  config.sequel.schema_format = :sql
+
+  # Whether to dump the schema after successful migrations.
+  # Defaults to false in production and test, true otherwise.
+  config.sequel.schema_dump = true
+
+  # These override corresponding settings from the database config.
+  config.sequel.max_connections = 16
+  config.sequel.search_path = %w[mine public]
+
+  # Configure whether database's rake tasks will be loaded or not.
+  #
+  # If passed a String or Symbol, this will replace the `db:` namespace for
+  # the database's Rake tasks.
+  #
+  # ex: config.sequel.load_database_tasks = :sequel
+  #     will results in `rake db:migrate` to become `rake sequel:migrate`
+  #
+  # Defaults to true
+  config.sequel.load_database_tasks = false
+
+  # This setting disabled the automatic connect after Rails init
+  config.sequel.skip_connect = false
+
+  # Configure if Sequel should try to 'test' the database connection in order
+  # to fail early
+  config.sequel.test_connect = true
+
+  # If you want to use a specific logger
+  # config.sequel.logger = MyLogger.new($stdout)
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: households
@@ -7,8 +8,11 @@
 #  name :string           not null
 #
 
-class Household < ApplicationRecord
-  has_many :users
+class Household < Sequel::Model
+  one_to_many :users
 
-  validates :name, presence: true
+  def validate
+    super
+    validates_presence %i[name]
+  end
 end

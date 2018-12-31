@@ -10,7 +10,7 @@ module Types
     end
 
     def current_user
-      User.includes(:avatar_attachment, teams: %i[age_group club]).find_by!(id: context[:current_user])
+      User.eager(teams: %i[age_group club]).where(id: context[:current_user].id).first!
     end
 
     field :seasons, resolver: Resolvers::SeasonsResolver,
@@ -30,11 +30,11 @@ module Types
     end
 
     def all_divisions
-      Division.arrange_serializable
+      Division.all
     end
 
     def divisions
-      Division.roots
+      Division.all
     end
 
     def division_children(id:)
@@ -52,18 +52,20 @@ module Types
 
     field :teams, [Types::TeamType], null: true do
       argument :page, Integer, required: true
+      argument :page_size, Integer, required: false, default_value: 25
     end
 
-    def teams(page:)
-      Team.includes(:club, :age_group, :division, :season, :members).page(page)
+    def teams(page:, page_size:)
+      Team.eager(:club, :age_group, :division, :season, :members).paginate(page, page_size)
     end
 
     field :users, [Types::UserType], null: true do
       argument :page, Integer, required: true
+      argument :page_size, Integer, required: false, default_value: 25
     end
 
-    def users(page:)
-      User.includes(:avatar_attachment, teams: %i[age_group club]).page(page).without_count
+    def users(page:, page_size:)
+      User.eager(teams: %i[age_group club]).paginate(page, page_size)
     end
 
     field :users_count, Integer, null: false

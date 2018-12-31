@@ -39,12 +39,13 @@ require 'rails_helper'
 #
 
 RSpec.describe User, type: :model do
+  it { should validate_unique :email }
   describe 'validations' do
     describe 'email' do
       it 'validates uniqueness' do
-        user = build(:user)
+        user = create(:user)
 
-        expect(user).to validate_uniqueness_of(:email)
+        expect(user).to validate_unique(:email)
       end
 
       it 'rejects invalid emails' do
@@ -54,15 +55,15 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe 'phone_number' do
+    describe 'mobile_number' do
       it 'validates uniqueness' do
         user = build(:user)
 
-        expect(user).to validate_uniqueness_of(:phone_number).case_insensitive
+        expect(user).to validate_unique(:mobile_number).case_insensitive
       end
 
       it 'rejects invalid phone numbers' do
-        invalid_user = build(:user, phone_number: '901')
+        invalid_user = build(:user, mobile_number: '901')
 
         expect(invalid_user).not_to be_valid
       end

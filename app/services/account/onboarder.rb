@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module AccountServices
+module Account
   class Onboarder
     def self.perform(user_attributes:, options: {})
       new(user_attributes, options).perform

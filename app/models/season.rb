@@ -11,13 +11,21 @@
 #  start_date :datetime
 #
 
-class Season < ApplicationRecord
-  has_many :teams
+class Season < Sequel::Model
+  # Teams
+  many_to_many :teams,
+               class: :Team,
+               left_key: :season_id,
+               right_key: :team_id,
+               join_table: :season_teams, conditions: { is_active: true }
+  many_to_many :former_teams, clone: :teams, conditions: { is_active: false }
 
-  validates :name, presence: true
+  # TODO: Need to sort out handling season expiration
 
-  before_save :expire_season,
-              if: proc { |season| season.end_date.present? }
+  def validate
+    super
+    validates_presence %i[name]
+  end
 
   def self.active
     where('end_date >= ? AND active = ?', Time.current, true)

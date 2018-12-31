@@ -10,6 +10,11 @@
 #  updated_at :datetime         not null
 #
 
-class Club < ApplicationRecord
-  validates :name, presence: true
+class Club < Sequel::Model
+  one_to_many :members, class: :User
+  one_to_many :inactive_members, class: :User, conditions: { account_is_active: false }
+  def validate
+    super
+    validates_presence %i[name]
+  end
 end

@@ -23,8 +23,6 @@
 #  index_addresses_on_user_id  (user_id)
 #
 
-class Address < ApplicationRecord
-  acts_as_address
-
-  belongs_to :user
+class Address < Sequel::Model
+  one_to_one :user
 end

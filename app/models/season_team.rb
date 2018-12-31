@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: season_teams
@@ -19,12 +20,13 @@
 #  index_season_teams_on_team_id_and_season_id  (team_id,season_id) UNIQUE
 #
 
-class SeasonTeam < ApplicationRecord
-  belongs_to :season
-  belongs_to :team
-  belongs_to :division
+class SeasonTeam < Sequel::Model
+  one_to_many :season
+  one_to_many :team
+  one_to_many :division
 
-  validates :season, presence: true
-  validates :team, presence: true
-  validates :division, presence: true
+  def validate
+    super
+    validates_presence %i[season_id team_id division_id]
+  end
 end

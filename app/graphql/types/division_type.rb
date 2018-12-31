@@ -8,8 +8,7 @@ module Types
     field :id, ID, null: false
     field :name, String, null: false
     field :description, String, null: true
-    field :ancestry, String, null: true
-    field :ancestor_name, String, null: true
+    field :parent_id, ID, null: true
     field :children, [Types::DivisionType], null: true
   end
 end

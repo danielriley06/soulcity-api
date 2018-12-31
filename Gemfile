@@ -4,8 +4,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.5.3'
 
 gem 'rails', '~> 5.2.2'
-gem 'puma', '~> 3.11'
-gem 'redis', '~> 4.0'
+gem 'puma', '~> 3.0'
+gem 'puma_worker_killer'
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', '>= 1.1.0', require: false
 
@@ -15,14 +15,14 @@ gem 'nakayoshi_fork', '~> 0.0.4'
 # Database/PG support
 gem 'pg', '>= 0.18', '< 2.0'
 gem "sequel-rails"
-gem 'ctes_in_my_pg', github: 'kmurph73/ctes_in_my_pg', branch: 'rails-5-2-0'
+gem "sequel_pg", require: 'sequel'
+gem "sequel_secure_password"
 gem "search_object", "~> 1.2"
 gem "search_object_graphql", "~> 0.1"
 gem "mainstreet", "~> 0.2.0"
 
 # Authentication & Authorization
-gem "knock", "~> 2.1"
-gem "jwt", "~> 1.5"
+gem "jwt", "~> 2.1"
 gem "access-granted", "~> 1.3"
 gem 'rack-cors'
 
@@ -31,9 +31,13 @@ gem "graphql", "~> 1.8"
 gem 'apollo_upload_server', '2.0.0.beta.1'
 gem "graphql-query-resolver", "~> 0.2.0"
 
-# Redis
-gem 'redis', '~> 4.0'
+# Websockets
+gem 'redis'
 gem "connection_pool", "~> 2.2"
+gem 'anycable-rails', '~> 0.6.0'
+gem 'yabeda'
+gem 'prometheus-client'
+gem 'yabeda-prometheus'
 
 # File Attachments
 gem 'shrine', '~> 2.1'
@@ -41,7 +45,6 @@ gem "aws-sdk-s3", "~> 1.30"
 gem "image_processing", "~> 1.7"
 
 # Validation libs
-gem "email_validator", "~> 1.6"
 gem 'phonelib', "~> 0.6"
 
 
@@ -49,7 +52,7 @@ gem 'phonelib', "~> 0.6"
 gem "kaminari", "~> 1.1"
 
 # Seed data
-gem "sprig", "~> 0.3.0"
+gem 'factory_bot', '~> 4.1'
 
 # Background jobs
 gem 'sidekiq', '~> 5.2.1'
@@ -63,12 +66,16 @@ gem "twilio-ruby", "~> 5.17"
 # Bitly integration
 gem "bitly", "~> 1.1"
 
+# Logging
+gem "lograge"
+gem 'rollbar'
+
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem "rspec-rails", "~> 3.8"
-  gem 'shoulda-matchers', '4.0.0.rc1'
-  gem 'factory_bot_rails'
-  gem 'awesome_print'
+  gem 'rspec_sequel_matchers'
+  gem "factory_bot_rails", "~> 4.0"
+  gem 'awesome_print', require: 'awesome_print'
   gem "ffaker", "~> 2.10"
 end
 

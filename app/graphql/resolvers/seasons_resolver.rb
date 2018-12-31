@@ -15,7 +15,7 @@ module Resolvers
                              description: 'Fetch the {nth} page of Seasons'
 
     def resolve(active: true, page: 1, limit: 25)
-      Season.where(active: active).page(page).limit(limit)
+      Season.where(active: active).paginate(page, limit)
     end
   end
 end

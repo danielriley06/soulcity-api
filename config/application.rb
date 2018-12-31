@@ -26,14 +26,22 @@ module SoulcityApi
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
 
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration can go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded after loading
-    # the framework and any gems in your application.
+    # We want to set up a custom logger which logs to STDOUT.
+    # Docker expects your application to log to STDOUT/STDERR and to be ran
+    # in the foreground.
+    config.log_level = :debug
+    config.log_tags  = %i[subdomain uuid]
+    config.logger    = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
 
-    # Only loads a smaller set of middleware suitable for API only apps.
-    # Middleware like session, flash, cookies can be added back manually.
-    # Skip views, helpers and assets when generating a new resource.
+    config.action_cable.disable_request_forgery_protection = true
+    config.action_cable.url = ENV['CABLE_URL']
+    config.action_cable.mount_path = ENV['CABLE_URL'].nil? ? '/cable' : nil
+
     config.api_only = true
+
+    config.sequel.after_connect = proc do
+      Sequel::Model.plugin :validation_helpers
+      Sequel::Model.plugin :nested_attributes
+    end
   end
 end

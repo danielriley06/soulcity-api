@@ -1,7 +1,2 @@
-# HTTP Dev Enviroment
-web: rails s -p 3000
-
-# HTTPS Dev Enviroment
-# web: rails s -b 'ssl://localhost:3000?key=localhost.key&cert=localhost.crt'
-
-worker: bundle exec sidekiq -e development
+web: ADAPTER=any_cable CABLE_URL='ws://localhost:3334/cable' bundle exec rails s -b 0.0.0.0 -p 3000
+rpc: ADAPTER=any_cable bundle exec anycable --server-command="anycable-go --port 3334"
